@@ -9,13 +9,17 @@ def fitness():
   pass
 
 
+
+
+
+##################################################################################################################################################################################################################################################
 # Conversiones de Numeros
 # Se hace de esta manera dado que las funciones de python no son tan precisas
 
 # Convertir numero real a Binario
-def binario(nro):
+def convBinario(nro):
   return BitArray(float=nro, length=64).bin
 
 # Convertir numero binario a real
-def real(nro):
+def convReal(nro):
   return BitArray(bin=nro).float

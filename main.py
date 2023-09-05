@@ -4,7 +4,7 @@ import random
 import os
 from statistics import mean
 import matplotlib.pyplot as plt
-from bitstring import BitArray
+from funciones import *
 
 # El resultado a obtener deberia ser 3.759816
 
