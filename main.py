@@ -7,8 +7,17 @@ import matplotlib.pyplot as plt
 from funciones import *
 
 # El resultado a obtener deberia ser 3.759816
+# Se sabe que el valor se encuentra entre 3 y 4, ademas de que se sabe que el valor flotante es de 6 digitos
+# Por lo tanto se trabajara solo sobre la parte flotante, suponiendo de entrada que el valor sera de 3.algo
 
-caracteres = 64
+# Cantidad de individuos por poblacion
+cantidad = 10
+
+# Cantidad de cromosomas / bits a usar
+# Sabiendo que se trabaja con 6 digitos de precision, se necesitan 20 bits para poder representar todos los numeros
+caracteres = 20
+
+# Cantidad de ciclos a realizar
 ciclos = 200
 
 #Verificamos si se usa metodo de ruleta o torneo
@@ -33,3 +42,4 @@ else:
 
 
 # Ejecucion del algoritmo genetico
+poblacion = generarPoblacion(cantidad, caracteres)
