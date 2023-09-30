@@ -11,7 +11,7 @@ from funciones import *
 # Por lo tanto se trabajara solo sobre la parte flotante, suponiendo de entrada que el valor sera de 3.algo
 
 # Cantidad de individuos por poblacion
-cantidad = 10
+cantidad = 20
 
 # Cantidad de cromosomas / bits a usar
 # Sabiendo que se trabaja con 6 digitos de precision, se necesitan 20 bits para poder representar todos los numeros
@@ -51,5 +51,24 @@ for ciclo in range(1, ciclos+1):
     # Se obtienen los valores objetivos de cada individuo
     valoresObjetivos = objetivoPoblacional(poblacion)
 
-    # Se obtiene el fitness de cada individuo
+    # Se obtienen los fitness de cada individuo
     valoresFitness = fitnessPoblacional(poblacion)
+
+    # Obtengo candidatos a realizar operaciones de cruce y mutacion
+    if not ruleta:
+        seleccionados = torneo(poblacion)
+    
+    poblacion = []
+
+    # Cruce
+    for i in range(0, cantidad, 2):
+        # Solo sucede si las probabilidades se cumplen
+        poblacion.extend(crossover(seleccionados[i], seleccionados[i+1], 0.75, caracteres))
+
+    # Mutacion
+    for i in range(cantidad):
+        poblacion[i] = mutacion(poblacion[i], 0.05, caracteres)
+    
+
+for x in poblacion:
+    print(x.flotante)

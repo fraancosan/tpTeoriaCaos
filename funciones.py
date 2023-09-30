@@ -20,12 +20,52 @@ def generarPoblacionInicial(tamaño, caracteres):
   poblacion = []
   for i in range(tamaño):
     poblacion.append(cromosoma(caracteres))
-
   return poblacion
 
+# Se realiza seleccion por torneo
+def torneo(cromosomas):
+  seleccionados = []
+  for i in range(len(cromosomas)):
+    # Se eligen 2 cromosomas al azar
+    seleccion = random.sample(cromosomas, 2)
+    # Se elige el mejor de los 2
+    seleccionados.append(min(seleccion, key=lambda x: x.valorFitness))
+  
+  return seleccionados
+
+def crossover(cromosoma1, cromosoma2, probabilidad, caracteres):
+  if random.random() <= probabilidad:
+    # Se elige un punto de corte
+    puntoCorte = random.choice(range(caracteres))
+    # Se realiza el crossover
+    valor1 = cromosoma1.valor[:puntoCorte] + cromosoma2.valor[puntoCorte:]
+    valor2 = cromosoma2.valor[:puntoCorte] + cromosoma1.valor[puntoCorte:]
+    # Se actualizan los cromosomas
+    cromosoma1 = cromosoma(caracteres, valor1)
+    cromosoma2 = cromosoma(caracteres, valor2)
+  return cromosoma1, cromosoma2
+
+def mutacion(cromosoma1, probabilidad, caracteres):
+  if random.random() <= probabilidad:
+    # Se elige un punto de mutacion
+    puntoMutacion = random.choice(range(caracteres))
+    valor = cromosoma1.valor
+    # Se realiza la mutacion
+    if valor[puntoMutacion] == "0":
+      valor = valor[:puntoMutacion] + "1" + valor[puntoMutacion+1:]
+    else:
+      valor = valor[:puntoMutacion] + "0" + valor[puntoMutacion+1:]
+
+    # Se actualiza el cromosoma
+    cromosoma1 = cromosoma(caracteres, valor)
+  return cromosoma1
+
 class cromosoma:
-  def __init__(self, caracteres):
-    self.valor = self.generar(caracteres)
+  def __init__(self, caracteres, valor=None):
+    if valor != None:
+      self.valor = valor
+    else:
+      self.valor = self.generar(caracteres)
     self.entero = self.pasarEntero()
     self.flotante = self.completarNumero()
     self.valorObjetivo = self.objetivo()
@@ -93,10 +133,3 @@ class cromosoma:
     # Independientemente de si es mayor o menor a 1
     # Mientras mas cerca a 0, mas cerca de la solucion
     return abs(1 - fitness)
-
-  def actualizar(self, valor):
-    self.valor = valor
-    self.entero = self.pasarEntero()
-    self.flotante = self.completarNumero()
-    self.valorObjetivo = self.objetivo()
-    self.fitness = self.fitness()
