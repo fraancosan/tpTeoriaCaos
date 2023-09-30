@@ -1,2 +1,1 @@
-# tpTeoriaCaos
-Trabajo Practico algoritmos geneticos UTNFRRO
+# Trabajo Practico algoritmos geneticos UTNFRRO
