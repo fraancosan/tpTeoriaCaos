@@ -42,8 +42,14 @@ else:
 
 
 # Ejecucion del algoritmo genetico
-poblacion = generarPoblacion(cantidad, caracteres)
+poblacion = generarPoblacionInicial(cantidad, caracteres)
+
+
 
 # Se producen los ciclos
 for ciclo in range(1, ciclos+1):
-    pass
+    # Se obtienen los valores objetivos de cada individuo
+    valoresObjetivos = objetivoPoblacional(poblacion)
+
+    # Se obtiene el fitness de cada individuo
+    valoresFitness = fitnessPoblacional(poblacion)
