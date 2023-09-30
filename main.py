@@ -43,3 +43,7 @@ else:
 
 # Ejecucion del algoritmo genetico
 poblacion = generarPoblacion(cantidad, caracteres)
+
+# Se producen los ciclos
+for ciclo in range(1, ciclos+1):
+    pass

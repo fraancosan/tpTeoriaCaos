@@ -1,8 +1,28 @@
 import random
 
-# Función de objetivo
-def objetivo():
-  pass
+# Función objetivo
+def objetivo(tasa, poblacion):
+  return (tasa*poblacion*(1-poblacion))
+
+def realizarObjetivo(tasa):
+  # Dado que es una funcion recursiva, se fijara un limite de recursividad en 200 años
+  # Se toma esa cantidad de años para dar tiempo a que se estabilice la poblacion
+  # Dado que la poblacion inicial es irrelevante, se tomara como poblacion inicial 0.4
+  # Se completa el primer valor, dado que es el valor del primer año
+  valores = [0.4]
+  poblacion = 0.4
+  # Se calculan los valores de la poblacion para los proximos 199 años
+  for i in range(199):
+    poblacion = objetivo(tasa, poblacion)
+    valores.append(poblacion)
+  return valores
+
+# Se realiza la funcion objetivo por cada individuo de la poblacion
+def realizarObjetivoLista(tasas):
+  valores = []
+  for tasa in tasas:
+    valores.append(realizarObjetivo(tasa))
+  return valores
 
 # Función de fitness
 def fitness():
@@ -35,3 +55,20 @@ def comprobarPoblacionInicial(poblacion, caracteres):
       poblacion[i] = generarPoblacion(1, caracteres)[0]
 
   return poblacion
+
+
+
+# Funciones para pasar de binario a decimal
+def pasarEntero(lista):
+  numeros = []
+  for numero in lista:
+    numeros.append(int(numero, 2))
+  return numeros
+
+def completarNumeros(lista):
+  numeros = []
+  lista = pasarEntero(lista)
+  # se añade a cada numero el valor 3, dejando el resto del numero como decimal
+  for numero in lista:
+    numeros.append(float("3." + str(numero)))
+  return numeros
