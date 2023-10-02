@@ -7,7 +7,6 @@ def objetivoPoblacional(cromosomas):
     valores.append(cromosoma.valorObjetivo)
   return valores
 
-
 # Se obtiene el fitness de cada individuo
 def fitnessPoblacional(cromosomas):
   valoresFitness = []
@@ -36,11 +35,9 @@ def eleccionTorneo(cromosomas):
   
   # Si uno de los fitness excede el valor deseado, y el otro no hago lo siguiente
   else:
-    # Dado que habra resultados mayores a 1, convierto ese fitness en una distancia que me indique que tan lejos esta de la solucion
-    # Independientemente de si es mayor o menor a 1
-    # Mientras mas cerca a 0, mas cerca de la solucion
-    fitness1 = abs(1 - fitness1)
-    fitness2 = abs(1 - fitness2)
+    # Utilizo el valor fitness como numero absoluto
+    fitness1 = cromosomas[0].valorFitnessAbs
+    fitness2 = cromosomas[1].valorFitnessAbs
 
     # Elijo el que este mas cerca de la solucion
     if fitness1 < fitness2:
@@ -101,7 +98,13 @@ class cromosoma:
     self.entero = self.pasarEntero()
     self.flotante = self.completarNumero()
     self.valorObjetivo = self.objetivo()
+    # Mas cerca del 1 es mas cerca de la solucion
     self.valorFitness = self.fitness()
+
+    # Dado que habra resultados mayores a 1, convierto ese fitness en una distancia que me indique que tan lejos esta de la solucion
+    # Independientemente de si es mayor o menor a 1
+    # Mientras mas cerca a 0, mas cerca de la solucion
+    self.valorFitnessAbs = abs(1 - self.valorFitness)
 
   def limitar(self, nro):
     # Dado que el espacio de solucion es muy grande y se tiene conocimiento de una aproximacion a la solucion, se limita el espacio de solucion
