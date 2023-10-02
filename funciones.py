@@ -22,6 +22,36 @@ def generarPoblacionInicial(tamaño, caracteres):
     poblacion.append(cromosoma(caracteres))
   return poblacion
 
+
+def eleccionTorneo(cromosomas):
+  fitness1 = cromosomas[0].valorFitness
+  fitness2 = cromosomas[1].valorFitness
+  # Si ambos fitness exceden el valor deseado, se elige el menor
+  if fitness1 > 1 and fitness2 > 1:
+    return min(cromosomas, key=lambda x: x.valorFitness)
+  
+  # Si ambos fitness son menores al valor deseado, se elige el mayor
+  elif fitness1 <= 1 and fitness2 <= 1:
+    return max(cromosomas, key=lambda x: x.valorFitness)
+  
+  # Si uno de los fitness excede el valor deseado, y el otro no hago lo siguiente
+  else:
+    # Dado que habra resultados mayores a 1, convierto ese fitness en una distancia que me indique que tan lejos esta de la solucion
+    # Independientemente de si es mayor o menor a 1
+    # Mientras mas cerca a 0, mas cerca de la solucion
+    fitness1 = abs(1 - fitness1)
+    fitness2 = abs(1 - fitness2)
+
+    # Elijo el que este mas cerca de la solucion
+    if fitness1 < fitness2:
+      return cromosomas[0]
+    elif fitness1 > fitness2:
+      return cromosomas[1]
+    
+    # En caso de que ambos esten a la misma distancia de la solucion, elijo uno al azar
+    else:
+      return random.choice(cromosomas)
+
 # Se realiza seleccion por torneo
 def torneo(cromosomas):
   seleccionados = []
@@ -29,8 +59,7 @@ def torneo(cromosomas):
     # Se eligen 2 cromosomas al azar
     seleccion = random.sample(cromosomas, 2)
     # Se elige el mejor de los 2
-    seleccionados.append(min(seleccion, key=lambda x: x.valorFitness))
-  
+    seleccionados.append(eleccionTorneo(seleccion))
   return seleccionados
 
 def crossover(cromosoma1, cromosoma2, probabilidad, caracteres):
@@ -62,29 +91,32 @@ def mutacion(cromosoma1, probabilidad, caracteres):
 
 class cromosoma:
   def __init__(self, caracteres, valor=None):
+
+    # Si genero el cromosoma sin establecerle un valor, se genera un valor aleatorio
     if valor != None:
       self.valor = valor
     else:
       self.valor = self.generar(caracteres)
+
     self.entero = self.pasarEntero()
     self.flotante = self.completarNumero()
     self.valorObjetivo = self.objetivo()
     self.valorFitness = self.fitness()
 
+  def limitar(self, nro):
+    # Dado que el espacio de solucion es muy grande y se tiene conocimiento de una aproximacion a la solucion, se limita el espacio de solucion
+    # Se sabe que el valor se encuentra entre 3 y 4, ademas de que se sabe que el valor flotante es de 6 digitos
+    # Por lo tanto se trabajara solo sobre la parte flotante, suponiendo de entrada que el valor sera de 3.algo
+    # Devuelve True si hay que regenerar el cromosoma
+    nro = int(nro, 2)
+    return (0 > nro or nro > 999999)
+
   def generar(self, caracteres):
-    def limitar(nro):
-      # Dado que el espacio de solucion es muy grande y se tiene conocimiento de una aproximacion a la solucion, se limita el espacio de solucion
-      # Se sabe que el valor se encuentra entre 3 y 4, ademas de que se sabe que el valor flotante es de 6 digitos
-      # Por lo tanto se trabajara solo sobre la parte flotante, suponiendo de entrada que el valor sera de 3.algo
-      # Devuelve True si hay que regenerar el cromosoma
-      nro = int(nro, 2)
-      return (0 > nro or nro > 999999)
-    
     # Se comprueba que la poblacion inicial no se encuentre fuera del espacio de solucion
     # En caso de que se encuentre fuera del espacio de solucion, se regenera el cromosoma
     def comprobar(caracteres):
       valor = crear(caracteres)
-      while(limitar(valor)):
+      while(self.limitar(valor)):
         valor = crear(caracteres)
       return valor
 
@@ -111,8 +143,7 @@ class cromosoma:
     # Dado que es una funcion recursiva, se fijara un limite de recursividad en 300 años
     # Se toma esa cantidad de años para dar tiempo a que se estabilice la poblacion
     # Dado que la poblacion inicial es irrelevante, se tomara como poblacion inicial 0.4
-    # Se completa el primer valor, dado que es el valor del primer año
-    valores = [0.4]
+    valores = [0.4] # Se completa el primer valor, dado que es el valor del primer año
     poblacion = 0.4
     # Se calculan los valores de la poblacion para los proximos 299 años
     for i in range(299):
@@ -120,16 +151,12 @@ class cromosoma:
       valores.append(poblacion)
     return valores
   
-  # Función de fitness en cuanto a la cercania al limite de caos
   def fitness(self):
-    # Obtengo como varian los valores de la poblacion a partir del año 70 para dar tiempo a que se llegue a estabilizar la poblacion
+    # Obtengo como varian los valores de la poblacion a partir del año 70 para dar tiempo a que se llegue a 'estabilizar' la poblacion
     nrosDistintos = len(set(self.valorObjetivo[70:]))
 
     # Se calcula el fitness, teniendo en cuenta que si hay mas de 64 valores distintos, establecemos que hay caos
     # Mientras mas cerca de 64 valores distintos, mas cerca de la solucion
     fitness = nrosDistintos/64
 
-    # Dado que habra resultados mayores a 1, convierto ese fitness en una distancia que me indique que tan lejos esta de la solucion
-    # Independientemente de si es mayor o menor a 1
-    # Mientras mas cerca a 0, mas cerca de la solucion
-    return abs(1 - fitness)
+    return fitness
