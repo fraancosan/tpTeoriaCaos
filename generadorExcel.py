@@ -23,20 +23,20 @@ class generadorExcel:
 
       # Instrucciones generales para todos los pasos
       # Encabezados
-      self.hoja_excel['A1'] = f"Ejecucion Nro"
-      self.hoja_excel['A1'].font = Font(bold=True)
-      self.alinearCelda(self.hoja_excel['A1'])
-      self.ponerBorde(self.hoja_excel['A1'], self.bordeDelgado)
+      self.hoja_excel['A4'] = f"Ejecucion Nro"
+      self.hoja_excel['A4'].font = Font(bold=True)
+      self.alinearCelda(self.hoja_excel['A4'])
+      self.ponerBorde(self.hoja_excel['A4'], self.bordeDelgado)
 
-      self.hoja_excel['B1'].font = Font(bold=True)
-      self.hoja_excel['B1'] = f"Tasa de Crecimiento"
-      self.alinearCelda(self.hoja_excel['B1'])
-      self.ponerBorde(self.hoja_excel['B1'], self.bordeDelgado)
+      self.hoja_excel['B4'].font = Font(bold=True)
+      self.hoja_excel['B4'] = f"Tasa de Crecimiento"
+      self.alinearCelda(self.hoja_excel['B4'])
+      self.ponerBorde(self.hoja_excel['B4'], self.bordeDelgado)
 
-      self.hoja_excel['C1'] = f"Fitness"
-      self.hoja_excel['C1'].font = Font(bold=True)
-      self.alinearCelda(self.hoja_excel['C1'])
-      self.ponerBorde(self.hoja_excel['C1'], self.bordeDelgado)
+      self.hoja_excel['C4'] = f"Fitness"
+      self.hoja_excel['C4'].font = Font(bold=True)
+      self.alinearCelda(self.hoja_excel['C4'])
+      self.ponerBorde(self.hoja_excel['C4'], self.bordeDelgado)
 
       # Tamaño columnas
       self.hoja_excel.column_dimensions["A"].width = 20
@@ -49,38 +49,61 @@ class generadorExcel:
     def ponerBorde(self, celda, borde):
         celda.border = Border(top=borde, left=borde, right=borde, bottom=borde)
 
-    def generar(self, datos):
-        # Se llena el excel con los datos
-        for ejecucion in range(len(datos)):
-            self.hoja_excel[f"A{ejecucion+2}"] = f"Ejecucion {ejecucion+1}"
-            self.hoja_excel[f"B{ejecucion+2}"] = datos[ejecucion].flotante
-            self.hoja_excel[f"C{ejecucion+2}"] = datos[ejecucion].valorFitness
+    def generar(self, datos, ciclos, caracteres, individuos):
+        # Informacion general
+        self.hoja_excel['A1'] = f"Cantidad de ciclos: {ciclos}"
+        self.hoja_excel['A2'] = f"Cantidad de cromosomas: {caracteres}"
+        self.hoja_excel['A3'] = f"Cantidad de individuos por generacion: {individuos}"
 
-            # Se le da estilo a las celdas
-            self.alinearCelda(self.hoja_excel[f"A{ejecucion+2}"])
-            self.alinearCelda(self.hoja_excel[f"B{ejecucion+2}"])
-            self.alinearCelda(self.hoja_excel[f"C{ejecucion+2}"])
+        # Se añade estilo a las celdas
+        self.hoja_excel['A1'].font = Font(bold=True)
+        self.alinearCelda(self.hoja_excel['A1'])
+        self.ponerBorde(self.hoja_excel['A1'], self.bordeDelgado)
 
-            self.ponerBorde(self.hoja_excel[f"A{ejecucion+2}"], self.bordeDelgado)
-            self.ponerBorde(self.hoja_excel[f"B{ejecucion+2}"], self.bordeDelgado)
-            self.ponerBorde(self.hoja_excel[f"C{ejecucion+2}"], self.bordeDelgado)
-        
-        # Se ponen unas notas al final
-        self.hoja_excel[f"A{len(datos)+2}"] = "Mientras mas cerca este el fitness del 1, mas cerca esta de la solucion"
-        self.hoja_excel[f"A{len(datos)+3}"] = "Hay muchas soluciones posibles"
+        self.hoja_excel['A2'].font = Font(bold=True)
+        self.alinearCelda(self.hoja_excel['A2'])
+        self.ponerBorde(self.hoja_excel['A2'], self.bordeDelgado)
 
-        # Se les da estilo
-        self.hoja_excel[f"A{len(datos)+2}"].font = Font(bold=True)
-        self.alinearCelda(self.hoja_excel[f"A{len(datos)+2}"])
-        self.ponerBorde(self.hoja_excel[f"A{len(datos)+2}"], self.bordeDelgado)
-
-        self.hoja_excel[f"A{len(datos)+3}"].font = Font(bold=True)
-        self.alinearCelda(self.hoja_excel[f"A{len(datos)+3}"])
-        self.ponerBorde(self.hoja_excel[f"A{len(datos)+3}"], self.bordeDelgado)
+        self.hoja_excel['A3'].font = Font(bold=True)
+        self.alinearCelda(self.hoja_excel['A3'])
+        self.ponerBorde(self.hoja_excel['A3'], self.bordeDelgado)
 
         # Se hace merge a las celdas
-        self.hoja_excel.merge_cells(f"A{len(datos)+2}:C{len(datos)+2}")
-        self.hoja_excel.merge_cells(f"A{len(datos)+3}:C{len(datos)+3}")
+        self.hoja_excel.merge_cells('A1:C1')
+        self.hoja_excel.merge_cells('A2:C2')
+        self.hoja_excel.merge_cells('A3:C3')
+
+        # Se llena el excel con los datos
+        for ejecucion in range(len(datos)):
+            self.hoja_excel[f"A{ejecucion+5}"] = f"Ejecucion {ejecucion+1}"
+            self.hoja_excel[f"B{ejecucion+5}"] = datos[ejecucion].flotante
+            self.hoja_excel[f"C{ejecucion+5}"] = datos[ejecucion].valorFitness
+
+            # Se le da estilo a las celdas
+            self.alinearCelda(self.hoja_excel[f"A{ejecucion+5}"])
+            self.alinearCelda(self.hoja_excel[f"B{ejecucion+5}"])
+            self.alinearCelda(self.hoja_excel[f"C{ejecucion+5}"])
+
+            self.ponerBorde(self.hoja_excel[f"A{ejecucion+5}"], self.bordeDelgado)
+            self.ponerBorde(self.hoja_excel[f"B{ejecucion+5}"], self.bordeDelgado)
+            self.ponerBorde(self.hoja_excel[f"C{ejecucion+5}"], self.bordeDelgado)
+        
+        # Se ponen unas notas al final
+        self.hoja_excel[f"A{len(datos)+5}"] = "Mientras mas cerca este el fitness del 1, mas cerca esta de la solucion"
+        self.hoja_excel[f"A{len(datos)+6}"] = "Hay muchas soluciones posibles"
+
+        # Se les da estilo
+        self.hoja_excel[f"A{len(datos)+5}"].font = Font(bold=True)
+        self.alinearCelda(self.hoja_excel[f"A{len(datos)+5}"])
+        self.ponerBorde(self.hoja_excel[f"A{len(datos)+5}"], self.bordeDelgado)
+
+        self.hoja_excel[f"A{len(datos)+6}"].font = Font(bold=True)
+        self.alinearCelda(self.hoja_excel[f"A{len(datos)+6}"])
+        self.ponerBorde(self.hoja_excel[f"A{len(datos)+6}"], self.bordeDelgado)
+
+        # Se hace merge a las celdas
+        self.hoja_excel.merge_cells(f"A{len(datos)+5}:C{len(datos)+5}")
+        self.hoja_excel.merge_cells(f"A{len(datos)+6}:C{len(datos)+6}")
 
         # Se guarda el archivo
         self.libro_excel.save(f"{self.directorio_resultados}/resultados {datetime.now().strftime('%d-%m-%Y %H-%M')}.xlsx")

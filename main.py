@@ -48,4 +48,4 @@ for i in range(10):
     mejoresResultados.append(min(poblacion, key=lambda x: x.valorFitnessAbs))
 
 excel = generadorExcel()
-excel.generar(mejoresResultados)
+excel.generar(mejoresResultados, ciclos, caracteres, cantidad)
