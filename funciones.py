@@ -162,8 +162,8 @@ class cromosoma:
 
   def objetivo(self):
     def recursivo(tasa, poblacionInicial):
-      # Se redondea el resultado a 6 digitos
-      return round((tasa*poblacionInicial*(1-poblacionInicial)), 6)
+      # Se redondea el resultado a 4 digitos
+      return round((tasa*poblacionInicial*(1-poblacionInicial)), 4)
 
     # Dado que es una funcion recursiva, se fijara un limite de recursividad en 300 años
     # Se toma esa cantidad de años para dar tiempo a que se estabilice la poblacion
@@ -180,8 +180,8 @@ class cromosoma:
     # Obtengo como varian los valores de la poblacion a partir del año 70 para dar tiempo a que se llegue a 'estabilizar' la poblacion
     nrosDistintos = len(set(self.valorObjetivo[70:]))
 
-    # Se calcula el fitness, teniendo en cuenta que si hay mas de 64 valores distintos, establecemos que hay caos
-    # Mientras mas cerca de 64 valores distintos, mas cerca de la solucion
-    fitness = nrosDistintos/64
+    # Se calcula el fitness, teniendo en cuenta que si hay mas de 32 valores distintos, establecemos que hay caos
+    # Mientras mas cerca de 32 valores distintos, mas cerca de la solucion
+    fitness = nrosDistintos/32
 
     return fitness

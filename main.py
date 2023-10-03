@@ -8,11 +8,11 @@ from generadorExcel import generadorExcel
 # Sabiendo que se trabaja con 6 digitos de precision, se necesitan 20 bits para poder representar todos los numeros
 caracteres = 20
 
-# Se preguntara y validara la cantidad de individuos por poblacion, solo numeros enteros. Sugerido 50
-cantidad = validarIntPos("Ingrese la cantidad de individuos por poblacion - Sugerido 50: ")
+# Se preguntara y validara la cantidad de individuos por poblacion, solo numeros enteros.
+cantidad = validarIntPos("Ingrese la cantidad de individuos por poblacion: ")
 
-# Se preguntara cantidad de ciclos a realizar, solo numeros enteros. Sugerido 300
-ciclos = validarIntPos("Ingrese la cantidad de ciclos a realizar - Sugerido 300: ")
+# Se preguntara cantidad de ciclos a realizar, solo numeros enteros.
+ciclos = validarIntPos("Ingrese la cantidad de ciclos a realizar: ")
 
 # Se preguntara y validara la probabilidad de mutacion, solo numeros enteros entre 0 y 100. Sugerido 10
 probabilidadMutacion = validarProbabilidad("Ingrese la probabilidad de mutacion a utilizar, entre 0 y 100- Sugerido 10: ")
