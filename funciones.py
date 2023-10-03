@@ -86,6 +86,28 @@ def mutacion(cromosoma1, probabilidad, caracteres):
     cromosoma1 = cromosoma(caracteres, valor)
   return cromosoma1
 
+def validarIntPos(mensaje):
+  while True:
+    try:
+      cantidad = int(input(mensaje))
+      if cantidad <= 0:
+        raise ValueError
+      break
+    except ValueError:
+      print("Debe ingresar un numero entero mayor a 0")
+  return cantidad
+
+def validarProbabilidad(mensaje):
+  while True:
+    try:
+      cantidad = int(input(mensaje))
+      if cantidad <= 0 or cantidad > 100:
+        raise ValueError
+      break
+    except ValueError:
+      print("Debe ingresar un porcentaje mayor o igual a 0 y menor o igual a 100")
+  return cantidad
+
 class cromosoma:
   def __init__(self, caracteres, valor=None):
 
