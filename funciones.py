@@ -128,20 +128,21 @@ class cromosoma:
     # Mientras mas cerca a 0, mas cerca de la solucion
     self.valorFitnessAbs = abs(1 - self.valorFitness)
 
-  def limitar(self, nro):
-    # Dado que el espacio de solucion es muy grande y se tiene conocimiento de una aproximacion a la solucion, se limita el espacio de solucion
-    # Se sabe que el valor se encuentra entre 3 y 4, ademas de que se sabe que el valor flotante es de 6 digitos
-    # Por lo tanto se trabajara solo sobre la parte flotante, suponiendo de entrada que el valor sera de 3.algo
-    # Devuelve True si hay que regenerar el cromosoma
-    nro = int(nro, 2)
-    return (0 > nro or nro > 999999)
+  
 
   def generar(self, caracteres):
+    def limitar(nro):
+      # Dado que el espacio de solucion es muy grande y se tiene conocimiento de una aproximacion a la solucion, se limita el espacio de solucion
+      # Se sabe que el valor se encuentra entre 3 y 4, ademas de que se sabe que el valor flotante es de 6 digitos
+      # Por lo tanto se trabajara solo sobre la parte flotante, suponiendo de entrada que el valor sera de 3.algo
+      # Devuelve True si hay que regenerar el cromosoma
+      nro = int(nro, 2)
+      return (0 > nro or nro > 999999)
     # Se comprueba que la poblacion inicial no se encuentre fuera del espacio de solucion
     # En caso de que se encuentre fuera del espacio de solucion, se regenera el cromosoma
     def comprobar(caracteres):
       valor = crear(caracteres)
-      while(self.limitar(valor)):
+      while(limitar(valor)):
         valor = crear(caracteres)
       return valor
 
